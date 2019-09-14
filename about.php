@@ -1,7 +1,3 @@
-<?php
-
-
-?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -12,20 +8,13 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>LibMetadataQA</title>
+    <title>Sobre o LibMetadataQA</title>
   </head>
   <body>
     <?php require 'inc/navbar.php'; ?>
-    <div class="container">
-        
-        <h1>LibMetadataQA</h1>
-        <p>Ferramenta para certificação de qualidade dos metadados em acervos</p>
-
-        <p>1º Passo: Importar os metadados</p>
-        <p>2º Passo: Analisar o relatório gerado</p>
-
+    <div class="container">   
+        <h1>Sobre o LibMetadataQA</h1>
     </div>
-    
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
