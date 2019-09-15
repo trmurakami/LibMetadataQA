@@ -28,7 +28,7 @@ if (isset($_REQUEST["oai"])) {
     }    
     $body_repository["doc_as_upsert"] = true;
 
-
+    $insert_repository_result = Elasticsearch::update($body_repository["doc"]["url"], $body_repository);
 }
 
 ?>

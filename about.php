@@ -1,3 +1,18 @@
+<?php
+
+if (isset($_REQUEST["delete"])) {
+    if ($_REQUEST["delete"] == "SIM") {
+        require 'inc/config.php';
+        require 'inc/functions.php';
+        // Delete
+        $params = ['index' => $index];
+        $response = $client->indices()->delete($params);
+        header('Location: index.php');
+    }
+}
+
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -14,6 +29,38 @@
     <?php require 'inc/navbar.php'; ?>
     <div class="container">   
         <h1>Sobre o LibMetadataQA</h1>
+
+        <h2>Elasticsearch</h2>
+        <!-- Button trigger modal delete -->
+        <p>Gerenciar operações no Elasticsearch</p>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAllModal">
+            Excluir indice no Elasticsearch
+        </button>  
+
+        <!-- Modal -->
+        <div class="modal fade" id="deleteAllModal" tabindex="-1" role="dialog" aria-labelledby="deleteAllModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteAllModalLabel">Confirmação</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Tem certeza que deseja excluir todos os registros? Esta operação é irreversível!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <a class="btn btn-danger" href="about.php?delete=SIM" role="button">Excluir tudo</a>
+            </div>
+            </div>
+        </div>
+        </div>  
+
+
+
+
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

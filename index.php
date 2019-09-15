@@ -26,6 +26,33 @@
         <p>1º Passo: Importar os metadados</p>
         <p>2º Passo: Analisar o relatório gerado</p>
 
+        <div class="row">
+        <!--
+        <div class="col-md-4">
+            <h2>Heading</h2>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Heading</h2>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+        </div>
+        -->
+        <div class="col-md-4">
+            <h2>Registros</h2>
+            <ul class="list-group">
+                <li class="list-group-item"><a class="text-muted" href="search.php">Quantidade de registros: <?php echo Homepage::numberOfRecords(); ?></a></li>
+            </ul>
+        </div>        
+        <div class="col-md-4">
+            <h2>Tipos</h2>
+            <ul class="list-group">
+                <?php Homepage::fieldAgg("type");?>
+            </ul>
+        </div>
+        </div>
+
     </div>
     
     <!-- Optional JavaScript -->

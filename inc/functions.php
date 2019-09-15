@@ -315,10 +315,54 @@ class Elasticsearch
 
         // Update the index mapping
         $client->indices()->putMapping($mappingsParams);
-    }    
+    } 
     
 
 }
+
+/**
+ * Página Inicial
+ *
+ * @category Class
+ * @package  Homepage
+ * @author   Tiago Rodrigo Marçal Murakami <tiago.murakami@dt.sibi.usp.br>
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @link     http://github.com/sibiusp/nav_elastic
+ */
+class Homepage
+{
+    static function fieldAgg($field)
+    {
+        $query = '{
+            "aggs": {
+                "group_by_state": {
+                    "terms": {
+                        "field": "'.$field.'.keyword",
+                        "size" : 5
+                    }
+                }
+            }
+        }';
+        $response = Elasticsearch::search(null, 0, $query);
+        foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {
+            echo '<li class="list-group-item"><a href="result.php?filter[]=base:&quot;'.$facets['key'].'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'], 0, ',', '.').')</a></li>';
+        }
+    }
+    
+    static function numberOfRecords()
+    {
+        $body = '
+        {
+            "query": {
+                "match_all": {}
+            }
+        }
+        '; 
+        $response = Elasticsearch::search(null, 0, $body);
+        return $response["hits"]["total"]["value"];
+    }        
+}
+
 
 
 ?>
