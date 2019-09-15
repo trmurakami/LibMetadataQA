@@ -1,5 +1,5 @@
 <?php
-
+    require ('inc/functions.php'); 
 
 ?>
 <!doctype html>
@@ -20,6 +20,8 @@
         
         <h1>LibMetadataQA</h1>
         <p>Ferramenta para certificação de qualidade dos metadados em acervos</p>
+
+        <?php isset($error_connection_message)? print_r($error_connection_message):"" ?>
 
         <p>1º Passo: Importar os metadados</p>
         <p>2º Passo: Analisar o relatório gerado</p>
