@@ -14,12 +14,29 @@
     <?php require 'inc/navbar.php'; ?>
     <div class="container">  
         <h1>Ferramenta de importação de metadados</h1>
-
+        <p>Você pode importar os seguintes formatos de metadados</p>
         <ul>
             <li>CSV</li>
-            <li>Harvesting OAI-PMH</li>
+            <li>OAI-PMH (Harvesting)</li>
             <li>MARC import</li>
         </ul>
+
+        <h4>Harvesting OAI-PMH</h4>
+
+            <form action="tools/harvester.php" method="POST">
+                <div class="form-group">
+                    <label for="oai">URL do OAI</label>
+                    <input type="text" class="form-control" id="oai" name="oai" placeholder="Digite a URL do OAI">
+                </div>
+                <div class="form-group">
+                    <label for="metadataFormat">Formato de metadados</label>
+                    <select class="form-control" id="metadataFormat" name="metadataFormat">
+                    <option value="oai_dc" selected>oai_dc</option>
+                    <option>2</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>        
         
     </div>
 
