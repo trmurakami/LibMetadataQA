@@ -26,8 +26,12 @@
             <form action="tools/harvester.php" method="POST">
                 <div class="form-group">
                     <label for="oai">URL do OAI</label>
-                    <input type="text" class="form-control" id="oai" name="oai" placeholder="Digite a URL do OAI">
+                    <input type="text" class="form-control" id="oai" name="oai" placeholder="Digite a URL do OAI" required>
                 </div>
+                <div class="form-group">
+                    <label for="set">Set</label>
+                    <input type="text" class="form-control" id="set" name="set" placeholder="Digite o SET (opcional)">
+                </div>                
                 <div class="form-group">
                     <label for="metadataFormat">Formato de metadados</label>
                     <select class="form-control" id="metadataFormat" name="metadataFormat">

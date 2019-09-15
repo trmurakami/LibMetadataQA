@@ -3,7 +3,6 @@
 chdir('../');
 require 'inc/functions.php';
 
-
 if (isset($_REQUEST["oai"])) {
 
     $oaiUrl = $_REQUEST["oai"];
@@ -16,13 +15,56 @@ if (isset($_REQUEST["oai"])) {
 
     // Store repository data - Início
 
-    $body_repository["doc"]["name"] = (string)$identify->Identify->repositoryName;
-    $body_repository["doc"]["metadataFormat"] = $_REQUEST["metadataFormat"];
-    $body_repository["doc"]["date"] = (string)$identify->responseDate;
-    $body_repository["doc"]["url"] = (string)$identify->request;
+    $body_repository["doc"]["type"] = "Repository";
+    $body_repository["doc"]["OAI"]["name"] = (string)$identify->Identify->repositoryName;
+    $body_repository["doc"]["OAI"]["metadataFormat"] = $_REQUEST["metadataFormat"];
+    $body_repository["doc"]["OAI"]["date"] = (string)$identify->responseDate;
+    $body_repository["doc"]["OAI"]["url"] = $_REQUEST["oai"];
+    $body_repository["doc"]["OAI"]["urlOAI"] = (string)$identify->request;
+    if (isset($_REQUEST["set"])) {
+        $body_repository["doc"]["OAI"]["set"] = $_REQUEST["set"];
+    } else {
+        $body_repository["doc"]["OAI"]["set"] = "";
+    }    
     $body_repository["doc_as_upsert"] = true;
 
-    print_r($body_repository);
+
+}
+
+?>
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Resultado do OAI-PMH</title>
+  </head>
+  <body>
+  <?php require 'inc/navbar.php'; ?>
+    <div class="container">  
+        <h1>Resultado do OAI-PMH</h1> 
+        <?php print_r($body_repository); ?>
+        
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>  
+  
+  
+
+
+<?php
 
     //$insert_repository_result = elasticsearch::elastic_update($body_repository["doc"]["url"],"repository",$body_repository);
     //print_r($insert_repository_result);
