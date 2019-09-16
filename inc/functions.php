@@ -335,15 +335,42 @@ class Report
         global $client;
         $params = ['index' => $index];
         $response = $client->indices()->getMapping($params);
-        print("<pre>".print_r($response[$index]["mappings"]["properties"]["complete"]["properties"], true)."</pre>");
-
+        $facets = new Facets();
         foreach ($response[$index]["mappings"]["properties"]["complete"]["properties"] as $k => $v) {
-            echo "<br/>Olha a $k";
+            $facets->facet($k, 5, $k, null, "_term");
         }
 
         //$body["query"]["bool"]["must"]["query_string"]["query"] = "type:Record OAI";
         //return $response;
-    }      
+    }
+}
+
+Class Facets 
+{
+    public function facet($field, $size, $field_name, $sort, $sort_type)
+    {
+        //global $url_base;
+        //$query = $this->query;
+        $query["query"]["bool"]["must"]["query_string"]["query"] = "type:Record OAI";
+        $query["aggs"]["counts"]["terms"]["field"] = "complete.$field.keyword";
+        $query["aggs"]["counts"]["terms"]["missing"] = "Não preenchido";
+        if (isset($sort)) {
+            $query["aggs"]["counts"]["terms"]["order"][$sort_type] = $sort;
+        }
+        $query["aggs"]["counts"]["terms"]["size"] = $size;
+        $response = Elasticsearch::search(null, 0, $query);
+        $result_count = count($response["aggregations"]["counts"]["buckets"]);        
+
+        echo '<a href="#" class="list-group-item list-group-item-action active">'.$field_name.'</a>';
+        echo '<ul class="list-group list-group-flush">';  
+        foreach ($response["aggregations"]["counts"]["buckets"] as $facetResponse) {
+            echo '<li class="list-group-item d-flex justify-content-between align-items-center">';
+            echo '<a href="result.php?&filter[]='.$field.':&quot;'.str_replace('&', '%26', $facetResponse['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$facetResponse['key'].'</a>
+                <span class="badge badge-primary badge-pill">'.number_format($facetResponse['doc_count'], 0, ',', '.').'</span>';
+            echo '</li>'; 
+        }
+        echo '</ul>';              
+    }
 }
 
 

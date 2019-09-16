@@ -19,8 +19,7 @@
 
         <?php 
         
-          $result_source = Report::source();
-          print_r($result_source);
+        $result_source = Report::source();
 
         if ($result_source["hits"]["total"]["value"] > 0) {
             echo '<h3>Fonte</h3>';

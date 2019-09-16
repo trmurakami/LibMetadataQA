@@ -52,10 +52,10 @@ if (isset($_REQUEST["oai"])) {
             $body["doc_as_upsert"] = true;
             $id = uuid();
 
-            print("<pre>".print_r($body, true)."</pre>");
+            //print("<pre>".print_r($body, true)."</pre>");
 
             $result_upsert = Elasticsearch::update($id, $body);
-            print_r($result_upsert);            
+            //print_r($result_upsert);            
         
         }
 
@@ -80,7 +80,7 @@ if (isset($_REQUEST["oai"])) {
   <?php require 'inc/navbar.php'; ?>
     <div class="container">  
         <h1>Resultado do OAI-PMH</h1> 
-        <?php print_r($body_repository); ?>
+        <?php //print_r($body_repository); ?>
 
         <p><a href="../index.php">Voltar</a></p>
         
