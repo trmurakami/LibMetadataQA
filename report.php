@@ -38,6 +38,10 @@
         
         ?>
 
+        <br/><br/><br/><br/>
+
+        <?php Report::records(); ?>
+
 
     </div>
     <!-- Optional JavaScript -->

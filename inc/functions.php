@@ -327,7 +327,23 @@ class Report
         $body["query"]["bool"]["must"]["query_string"]["query"] = "type:Repository";
         $response = Elasticsearch::search(null, 10, $body);
         return $response;
-    }  
+    }
+    
+    static function records()
+    {
+        global $index;
+        global $client;
+        $params = ['index' => $index];
+        $response = $client->indices()->getMapping($params);
+        print("<pre>".print_r($response[$index]["mappings"]["properties"]["complete"]["properties"], true)."</pre>");
+
+        foreach ($response[$index]["mappings"]["properties"]["complete"]["properties"] as $k => $v) {
+            echo "<br/>Olha a $k";
+        }
+
+        //$body["query"]["bool"]["must"]["query_string"]["query"] = "type:Record OAI";
+        //return $response;
+    }      
 }
 
 
