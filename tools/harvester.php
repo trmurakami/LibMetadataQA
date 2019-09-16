@@ -9,7 +9,6 @@ if (isset($_REQUEST["oai"])) {
     $client_harvester = new \Phpoaipmh\Client(''.$oaiUrl.'');
     $myEndpoint = new \Phpoaipmh\Endpoint($client_harvester);
 
-
     // Result will be a SimpleXMLElement object
     $identify = $myEndpoint->identify();
 
@@ -26,9 +25,41 @@ if (isset($_REQUEST["oai"])) {
     } else {
         $body_repository["doc"]["OAI"]["set"] = "";
     }    
-    $body_repository["doc_as_upsert"] = true;
+    $body_repository["doc_as_upsert"] = true;  
 
-    $insert_repository_result = Elasticsearch::update($body_repository["doc"]["url"], $body_repository);
+    $uuid = uuid();
+
+    $insert_repository_result = Elasticsearch::update($uuid, $body_repository);
+
+
+    if ($_REQUEST["metadataFormat"] == "oai_dc") {
+
+        if (isset($_REQUEST["set"])) {
+            $recs = $myEndpoint->listRecords('oai_dc', null, null, $_REQUEST["set"]);
+        } else {
+            $recs = $myEndpoint->listRecords('oai_dc');
+        }
+
+        foreach ($recs as $rec) {
+
+            $data = $rec->metadata->children('http://www.openarchives.org/OAI/2.0/oai_dc/');
+            $rows = $data->children('http://purl.org/dc/elements/1.1/');
+
+            $array = get_object_vars($rows);
+            $body["doc"]["oai_id"] = (string)$rec->header->identifier;
+            $body["doc"]["type"] = "Record OAI";
+            $body["doc"]["complete"] = $array;
+            $body["doc_as_upsert"] = true;
+            $id = uuid();
+
+            print("<pre>".print_r($body, true)."</pre>");
+
+            $result_upsert = Elasticsearch::update($id, $body);
+            print_r($result_upsert);            
+        
+        }
+
+    }
 }
 
 ?>
@@ -50,6 +81,8 @@ if (isset($_REQUEST["oai"])) {
     <div class="container">  
         <h1>Resultado do OAI-PMH</h1> 
         <?php print_r($body_repository); ?>
+
+        <p><a href="../index.php">Voltar</a></p>
         
     </div>
 

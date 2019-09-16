@@ -8,7 +8,9 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 /* Load libraries for PHP composer */ 
-require (__DIR__.'/../vendor/autoload.php'); 
+require (__DIR__.'/../vendor/autoload.php');
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
 /* Connect to Elasticsearch */
 try {
@@ -24,7 +26,18 @@ try {
 
 if (isset($testIndex) && $testIndex == false) {
     Elasticsearch::createIndex($index, $client);
-    //Elasticsearch::mappingsIndex($index, $client);
+    Elasticsearch::mappingsIndex($index, $client);
+}
+
+function uuid()
+{
+    return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+        mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+        mt_rand(0, 0xffff),
+        mt_rand(0, 0x0fff) | 0x4000,
+        mt_rand(0, 0x3fff) | 0x8000,
+        mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+    );
 }
 
 /**
@@ -239,52 +252,9 @@ class Elasticsearch
             'index' => $indexName,
             'body' => [
                 'properties' => [
-                    'title' => [
-                        'type' => 'text',
-                        'analyzer' => 'portuguese',
-                        'fields' => [
-                            'keyword' => [
-                                'type' => 'keyword',
-                                'ignore_above' => 256
-                            ]
-                        ]
-                    ],
-                    'contributor' => [
-                        'type' => 'text',
-                        'analyzer' => 'portuguese',
-                        'fields' => [
-                            'keyword' => [
-                                'type' => 'keyword',
-                                'ignore_above' => 256
-                            ]
-                        ]
-                    ],
-                    'editions' => [
-                        'type' => 'text',
-                        'analyzer' => 'portuguese',
-                        'fields' => [
-                            'keyword' => [
-                                'type' => 'keyword',
-                                'ignore_above' => 256
-                            ]
-                        ]
-                    ],
-                    'publisher' => [
-                        'type' => 'text',
-                        'analyzer' => 'portuguese',
-                        'fields' => [
-                            'keyword' => [
-                                'type' => 'keyword',
-                                'ignore_above' => 256
-                            ]
-                        ]
-                    ],                                                               
-                    'date' => [
-                        'type' => 'integer'
-                    ],
-                    'languages' => [
+                     'complete' => [
                         'properties' => [
-                            'name' => [
+                            'date' => [
                                 'type' => 'text',
                                 'analyzer' => 'portuguese',
                                 'fields' => [
@@ -293,22 +263,9 @@ class Elasticsearch
                                         'ignore_above' => 256
                                     ]
                                 ]                                
-                            ],
-                            'code' => [
-                                'type' => 'text'                             
-                            ]                            
+                            ]                       
                         ]
-                    ],
-                    'physicalDescriptions' => [
-                        'type' => 'text',
-                        'analyzer' => 'portuguese',
-                        'fields' => [
-                            'keyword' => [
-                                'type' => 'keyword',
-                                'ignore_above' => 256
-                            ]
-                        ]
-                    ],                                          
+                    ]                                         
                 ]
             ]
         ];
@@ -361,6 +318,16 @@ class Homepage
         $response = Elasticsearch::search(null, 0, $body);
         return $response["hits"]["total"]["value"];
     }        
+}
+
+class Report 
+{
+    static function source()
+    {
+        $body["query"]["bool"]["must"]["query_string"]["query"] = "type:Repository";
+        $response = Elasticsearch::search(null, 10, $body);
+        return $response;
+    }  
 }
 
 

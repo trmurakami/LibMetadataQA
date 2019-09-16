@@ -1,3 +1,4 @@
+<?php require 'inc/functions.php'; ?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -14,6 +15,30 @@
     <?php require 'inc/navbar.php'; ?>
     <div class="container">   
         <h1>Relatórios</h1>
+
+
+        <?php 
+        
+          $result_source = Report::source();
+          print_r($result_source);
+
+        if ($result_source["hits"]["total"]["value"] > 0) {
+            echo '<h3>Fonte</h3>';
+            echo '<ul>';
+            echo '<li>Tipo: '.$result_source["hits"]["hits"][0]["_source"]["type"].'</li>';
+            echo '<li>Nome da fonte: '.$result_source["hits"]["hits"][0]["_source"]["OAI"]["name"].'</li>';
+            echo '<li>Formato de metadados: '.$result_source["hits"]["hits"][0]["_source"]["OAI"]["metadataFormat"].'</li>';
+            echo '<li>Data do harvesting: '.$result_source["hits"]["hits"][0]["_source"]["OAI"]["date"].'</li>';
+            echo '<li>URL: '.$result_source["hits"]["hits"][0]["_source"]["OAI"]["url"].'</li>';
+            if (isset($result_source["hits"]["hits"][0]["_source"]["OAI"]["set"])){
+                echo '<li>Set: '.$result_source["hits"]["hits"][0]["_source"]["OAI"]["set"].'</li>';
+            }
+            echo '</ul>';
+        }
+        
+        ?>
+
+
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
