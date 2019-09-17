@@ -20,9 +20,6 @@ if (!empty($_REQUEST)) {
     //$cursor = $client->search($params);
 
     $response = Elasticsearch::search($queryFields, 0, $query);
-
-    print_r($response);
-
     $content[] = "Faceta\tQuantidade";
 
     foreach ($response["aggregations"]["counts"]["buckets"] as $facets) {
