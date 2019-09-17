@@ -360,9 +360,31 @@ Class Facets
                 <span class="badge badge-primary badge-pill">'.number_format($facetResponse['doc_count'], 0, ',', '.').'</span>';
             echo '</li>';
         }
-        echo '</ul>';
-        echo '<p><a href="tools/export.php?field='.$field_name.'">Exportar valores do campo '.$field_name.'</a></p>';
+        echo '</ul>';        
+        $numberMissing = Tests::countMissing($field_name);
+        if ($numberMissing == 0) {
+            $alertClass = "alert-success"; 
+        } else {
+            $alertClass = "alert-warning"; 
+        }
+        echo '<div class="alert '.$alertClass.'" role="alert"><a href="listrecords.php?&search=-_exists_:complete.'.$field_name.'.keyword">Registros com o campo '.$field_name.' não preenchido: '.$numberMissing.'</a></div>';
+        echo '<p><a class="btn btn-primary btn-sm" role="button" href="tools/export.php?field='.$field_name.'">Exportar valores do campo '.$field_name.'</a></p>';
         echo '<br/><br/><br/>';              
+    }
+}
+
+Class Tests 
+{
+    public static function countMissing($field) {
+        global $index;
+        global $client;
+        $query["query"]["bool"]["must"]["query_string"]["query"] = "-_exists_:complete.$field.keyword";
+        $params = [];
+        $params["index"] = $index;
+        $params["body"] = $query;
+        $cursorTotal = $client->count($params);
+        $total = $cursorTotal["count"];                
+        return $total;
     }
 }
 

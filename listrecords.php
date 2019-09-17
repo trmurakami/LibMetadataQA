@@ -21,6 +21,10 @@ if (!empty($_REQUEST['filter'])) {
     }
 }
 
+if (!empty($_REQUEST['search'])) {
+    $query["query"]["bool"]["must"]["query_string"]["query"] = ''.$_REQUEST['search'].'';
+}
+
 /* Pagination */
 if (isset($_REQUEST['page'])) {
     $page = $_REQUEST['page'];    
