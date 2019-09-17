@@ -277,15 +277,6 @@ class Elasticsearch
 
 }
 
-/**
- * Página Inicial
- *
- * @category Class
- * @package  Homepage
- * @author   Tiago Rodrigo Marçal Murakami <tiago.murakami@dt.sibi.usp.br>
- * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link     http://github.com/sibiusp/nav_elastic
- */
 class Homepage
 {
     static function fieldAgg($field)
@@ -302,7 +293,7 @@ class Homepage
         }';
         $response = Elasticsearch::search(null, 0, $query);
         foreach ($response["aggregations"]["group_by_state"]["buckets"] as $facets) {
-            echo '<li class="list-group-item"><a href="result.php?filter[]=base:&quot;'.$facets['key'].'&quot;">'.$facets['key'].' ('.number_format($facets['doc_count'], 0, ',', '.').')</a></li>';
+            echo '<li class="list-group-item"><a href="report.php">'.$facets['key'].' ('.number_format($facets['doc_count'], 0, ',', '.').')</a></li>';
         }
     }
     
@@ -365,11 +356,13 @@ Class Facets
         echo '<ul class="list-group list-group-flush">';  
         foreach ($response["aggregations"]["counts"]["buckets"] as $facetResponse) {
             echo '<li class="list-group-item d-flex justify-content-between align-items-center">';
-            echo '<a href="result.php?&filter[]='.$field.':&quot;'.str_replace('&', '%26', $facetResponse['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$facetResponse['key'].'</a>
+            echo '<a href="listrecords.php?&filter[]='.$field.':&quot;'.str_replace('&', '%26', $facetResponse['key']).'&quot;"  title="E" style="color:#0040ff;font-size: 90%">'.$facetResponse['key'].'</a>
                 <span class="badge badge-primary badge-pill">'.number_format($facetResponse['doc_count'], 0, ',', '.').'</span>';
-            echo '</li>'; 
+            echo '</li>';
         }
-        echo '</ul>';              
+        echo '</ul>';
+        echo '<p><a href="tools/export.php?field='.$field_name.'">Exportar valores do campo '.$field_name.'</a></p>';
+        echo '<br/><br/><br/>';              
     }
 }
 
