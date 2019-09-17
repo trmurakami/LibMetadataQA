@@ -350,9 +350,15 @@ Class Facets
         }
         $query["aggs"]["counts"]["terms"]["size"] = $size;
         $response = Elasticsearch::search(null, 0, $query);
-        $result_count = count($response["aggregations"]["counts"]["buckets"]);        
+        $result_count = count($response["aggregations"]["counts"]["buckets"]);
+        
+        
+        echo '<div class="card text-center">
+        <div class="card-header bg-info">
+          Campo: '.$field_name.'
+        </div>
+        <div class="card-body">';
 
-        echo '<a href="#" class="list-group-item list-group-item-action active">'.$field_name.'</a>';
         echo '<ul class="list-group list-group-flush">';  
         foreach ($response["aggregations"]["counts"]["buckets"] as $facetResponse) {
             echo '<li class="list-group-item d-flex justify-content-between align-items-center">';
@@ -366,10 +372,13 @@ Class Facets
             $alertClass = "alert-success"; 
         } else {
             $alertClass = "alert-warning"; 
-        }
+        }        
         echo '<div class="alert '.$alertClass.'" role="alert"><a href="listrecords.php?&search=-_exists_:complete.'.$field_name.'.keyword">Registros com o campo '.$field_name.' não preenchido: '.$numberMissing.'</a></div>';
-        echo '<p><a class="btn btn-primary btn-sm" role="button" href="tools/export.php?field='.$field_name.'">Exportar valores do campo '.$field_name.'</a></p>';
-        echo '<br/><br/><br/>';              
+        $numberAgg = Tests::countAgg($field_name);
+        echo '<p>Número de valores únicos no campo: '.$numberAgg.'</p>';
+        echo '</div>';
+        echo '<div class="card-footer text-muted"><a href="tools/export.php?field='.$field_name.'">Exportar valores do campo '.$field_name.'</a></div>';
+        echo '</div><br/><br/>';              
     }
 }
 
@@ -386,6 +395,12 @@ Class Tests
         $total = $cursorTotal["count"];                
         return $total;
     }
+    public static function countAgg($field) {
+
+        $query["aggs"]["type_count"]["cardinality"]["field"] = "complete.$field.keyword";
+        $responseAgg = Elasticsearch::search(null, 0, $query);
+        return $responseAgg["aggregations"]["type_count"]["value"];
+    }    
 }
 
 
