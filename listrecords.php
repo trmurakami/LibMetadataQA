@@ -85,15 +85,19 @@ $cursor = $client->search($params);
                     foreach ($cursor["hits"]["hits"] as $r) {
                         
                         $keyArray = [];
+                        $keyArray[] = '<th scope="col">_id</th>';
                         $valueArray[]='<tr>';
-                        foreach ($r["_source"]["complete"] as $key => $value) {
-                            $keyArray[] = '<th scope="col">'.$key.'</th>';
-                            if (is_array($value)){
-                                $valueArray[]='<td>'.implode('|', $value).'</td>';
-                            } else {
-                                $valueArray[]='<td>'.$value.'</td>';
-                            }                    
-                            
+                        $valueArray[]='<td>'.$r["_source"]["old_id"].'</td>';
+                        if (is_array($r["_source"]["complete"])){
+                            foreach ($r["_source"]["complete"] as $key => $value) {
+                                $keyArray[] = '<th scope="col">'.$key.'</th>';                            
+                                if (is_array($value)){
+                                    $valueArray[]='<td>'.implode('|', $value).'</td>';
+                                } else {
+                                    $valueArray[]='<td>'.$value.'</td>';
+                                }                    
+                                
+                            }
                         }
                         $valueArray[]='</tr>';                     
                     }
