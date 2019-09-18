@@ -76,17 +76,42 @@ $cursor = $client->search($params);
 
             <div class="row">
                 <div class="col-12">                
-  
+                <table class="table">
+
 
                     <!-- RECORDS -->
                     <?php
 
                     foreach ($cursor["hits"]["hits"] as $r) {
-                        print_r($r);
+                        
+                        $keyArray = [];
+                        $valueArray[]='<tr>';
+                        foreach ($r["_source"]["complete"] as $key => $value) {
+                            $keyArray[] = '<th scope="col">'.$key.'</th>';
+                            if (is_array($value)){
+                                $valueArray[]='<td>'.implode('|', $value).'</td>';
+                            } else {
+                                $valueArray[]='<td>'.$value.'</td>';
+                            }                    
+                            
+                        }
+                        $valueArray[]='</tr>';                     
                     }
                     
                     ?>  
                     <!-- /RECORDS -->
+
+                    <thead>
+    <tr>
+      <?php print_r(implode('', $keyArray)); ?>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <?php print_r(implode('', $valueArray)); ?>
+    </tr>
+  </tbody>
+</table>                    
                                 
                 
                 </div>

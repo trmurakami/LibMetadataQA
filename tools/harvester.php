@@ -29,7 +29,7 @@ if (isset($_REQUEST["oai"])) {
 
     $uuid = uuid();
 
-    $insert_repository_result = Elasticsearch::update($uuid, $body_repository);
+    //$insert_repository_result = Elasticsearch::update($uuid, $body_repository);
 
 
     if ($_REQUEST["metadataFormat"] == "oai_dc") {
