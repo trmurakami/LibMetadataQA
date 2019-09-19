@@ -51,9 +51,29 @@
             </div>
             <br/><br/>
             <button type="submit" class="btn btn-primary">Enviar CSV</button>
-        </form>  
+        </form>
+
+        <hr>
+        <h4>Importar arquivo MARC</h4>
+
+        <form action="tools/import_marc.php" method="POST" enctype="multipart/form-data">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="fileMARC" name="fileMARC">
+                <label class="custom-file-label" for="fileMARC">Escolha o arquivo MARC</label>
+            </div>
+            <div class="form-group">
+                <label for="marcFormat">Formato do MARC (Importante!!)</label>
+                <select class="form-control" id="marcFormat" name="marcFormat">
+                <option value="ALEPHSEQ" selected>ALEPHSEQ</option>
+                <option value="MRC">MRC</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar MARC</button>
+        </form>            
         
     </div>
+
+    <?php require 'inc/footer.php'; ?>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
