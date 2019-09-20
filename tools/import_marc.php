@@ -12,8 +12,6 @@ if (isset($_REQUEST["marcFormat"])) {
 
 }
 
-
-
 if (file_exists("../data/marc.json")) {
     $marc_in_json = file("../data/marc.json");
     foreach ($marc_in_json as $line) {
