@@ -16,30 +16,12 @@
     <div class="container">   
         <h1>Relatórios</h1>
 
-
-        <?php 
-        
-        $result_source = Report::source();
-
-        if ($result_source["hits"]["total"]["value"] > 0) {
-            echo '<h3>Fonte</h3>';
-            echo '<ul>';
-            echo '<li>Tipo: '.$result_source["hits"]["hits"][0]["_source"]["type"].'</li>';
-            echo '<li>Nome da fonte: '.$result_source["hits"]["hits"][0]["_source"]["OAI"]["name"].'</li>';
-            echo '<li>Formato de metadados: '.$result_source["hits"]["hits"][0]["_source"]["OAI"]["metadataFormat"].'</li>';
-            echo '<li>Data do harvesting: '.$result_source["hits"]["hits"][0]["_source"]["OAI"]["date"].'</li>';
-            echo '<li>URL: '.$result_source["hits"]["hits"][0]["_source"]["OAI"]["url"].'</li>';
-            if (isset($result_source["hits"]["hits"][0]["_source"]["OAI"]["set"])){
-                echo '<li>Set: '.$result_source["hits"]["hits"][0]["_source"]["OAI"]["set"].'</li>';
-            }
-            echo '</ul>';
-        }
-        
-        ?>
-
         <br/><br/><br/><br/>
 
-        <?php Report::records(); ?>
+        <?php 
+            $result_source_type = Report::sourceType();
+            Report::records($result_source_type); 
+        ?>
 
 
     </div>

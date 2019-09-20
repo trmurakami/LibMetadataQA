@@ -313,26 +313,46 @@ class Homepage
 
 class Report 
 {
-    static function source()
+    static function sourceType()
     {
-        $body["query"]["bool"]["must"]["query_string"]["query"] = "type:Repository";
-        $response = Elasticsearch::search(null, 10, $body);
-        return $response;
+        $body["query"]["bool"]["must"]["query_string"]["query"] = "*";
+        $response = Elasticsearch::search(null, 1, $body);
+        //print("<pre>".print_r($response, true)."</pre>");
+        return $response["hits"]["hits"][0]["_source"]["type"];
     }
     
-    static function records()
+    static function records($type)
     {
         global $index;
         global $client;
         $params = ['index' => $index];
         $response = $client->indices()->getMapping($params);
         $facets = new Facets();
-        foreach ($response[$index]["mappings"]["properties"]["complete"]["properties"] as $k => $v) {
-            $facets->facet($k, 5, $k, null, "_term");
+        if ($type == "Record MARC") {
+            foreach ($response[$index]["mappings"]["properties"]["complete"]["properties"] as $k => $v) {
+                if (isset($v["properties"])) {
+                    if (isset($v["properties"]["ind1"])) {
+                        $facets->facet($k.".ind1", 5, $k." (Indicador 1)", null, "_term");
+                    }
+                    if (isset($v["properties"]["ind2"])) {
+                        $facets->facet($k.".ind2", 5, $k." (Indicador 2)", null, "_term");
+                    }
+                    if (isset($v["properties"]["subfields"])) {
+                        foreach ($v["properties"]["subfields"]["properties"] as $k_prop => $v_prop) {
+                            $facets->facet($k.".subfields.".$k_prop, 5, $k." Subcampo ".$k_prop, null, "_term");
+                        }
+                        
+                    }                                         
+                } else {
+                    $facets->facet($k, 5, $k, null, "_term");
+                }
+            }
+        } else {
+            foreach ($response[$index]["mappings"]["properties"]["complete"]["properties"] as $k => $v) {
+                $facets->facet($k, 5, $k, null, "_term");
+            }
         }
 
-        //$body["query"]["bool"]["must"]["query_string"]["query"] = "type:Record OAI";
-        //return $response;
     }
 }
 
@@ -340,18 +360,15 @@ Class Facets
 {
     public function facet($field, $size, $field_name, $sort, $sort_type)
     {
-        //global $url_base;
-        //$query = $this->query;
-        $query["query"]["bool"]["must"]["query_string"]["query"] = "type:Record OAI";
+        $query["query"]["bool"]["must"]["query_string"]["query"] = "*";
         $query["aggs"]["counts"]["terms"]["field"] = "complete.$field.keyword";
         $query["aggs"]["counts"]["terms"]["missing"] = "Não preenchido";
         if (isset($sort)) {
             $query["aggs"]["counts"]["terms"]["order"][$sort_type] = $sort;
         }
         $query["aggs"]["counts"]["terms"]["size"] = $size;
-        $response = Elasticsearch::search(null, 0, $query);
+        $response = Elasticsearch::search(null, 2, $query);
         $result_count = count($response["aggregations"]["counts"]["buckets"]);
-        
         
         echo '<div class="card text-center">
         <div class="card-header bg-info">

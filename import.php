@@ -64,8 +64,8 @@
             <div class="form-group">
                 <label for="marcFormat">Formato do MARC (Importante!!)</label>
                 <select class="form-control" id="marcFormat" name="marcFormat">
-                <option value="ALEPHSEQ" selected>ALEPHSEQ</option>
-                <option value="MRC">MRC</option>
+                <option value="--type ALEPHSEQ" selected>ALEPHSEQ</option>
+                <option value="">MRC</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Enviar MARC</button>
