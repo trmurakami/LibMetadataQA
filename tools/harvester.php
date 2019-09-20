@@ -60,7 +60,6 @@ if (isset($_REQUEST["oai"])) {
                 $body["doc_as_upsert"] = true;
                 $id = uuid();
                 $result_upsert = Elasticsearch::update($id, $body);
-                print_r($result_upsert);                 
             }          
         
         }
