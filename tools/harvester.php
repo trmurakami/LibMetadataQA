@@ -40,9 +40,7 @@ if (isset($_REQUEST["oai"])) {
             $recs = $myEndpoint->listRecords('oai_dc');
         }
 
-        $i = 0;
         foreach ($recs as $rec) {
-
 
             $data = $rec->metadata->children('http://www.openarchives.org/OAI/2.0/oai_dc/');
             $rows = $data->children('http://purl.org/dc/elements/1.1/');
