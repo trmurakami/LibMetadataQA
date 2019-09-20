@@ -40,7 +40,9 @@ if (isset($_REQUEST["oai"])) {
             $recs = $myEndpoint->listRecords('oai_dc');
         }
 
+        $i = 0;
         foreach ($recs as $rec) {
+
 
             $data = $rec->metadata->children('http://www.openarchives.org/OAI/2.0/oai_dc/');
             $rows = $data->children('http://purl.org/dc/elements/1.1/');
@@ -51,17 +53,15 @@ if (isset($_REQUEST["oai"])) {
             $json = iconv('UTF-8', 'ISO-8859-1//TRANSLIT//IGNORE', $json);
             $array = json_decode($json, true);
 
-
-            $body["doc"]["old_id"] = (string)$rec->header->identifier;
-            $body["doc"]["type"] = "Record OAI";      
-            $body["doc"]["complete"] = $array;
-            $body["doc_as_upsert"] = true;
-            $id = uuid();
-
-            //print("<pre>".print_r($body, true)."</pre>");
-
-            $result_upsert = Elasticsearch::update($id, $body);
-            //print_r($result_upsert);            
+            if (!empty($array)) {
+                $body["doc"]["old_id"] = (string)$rec->header->identifier;
+                $body["doc"]["type"] = "Record OAI";      
+                $body["doc"]["complete"] = $array;
+                $body["doc_as_upsert"] = true;
+                $id = uuid();
+                $result_upsert = Elasticsearch::update($id, $body);
+                print_r($result_upsert);                 
+            }          
         
         }
 
