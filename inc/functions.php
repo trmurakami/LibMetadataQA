@@ -263,7 +263,7 @@ class Elasticsearch
                                         'ignore_above' => 256
                                     ]
                                 ]                                
-                            ]                       
+                            ]
                         ]
                     ]                                         
                 ]

@@ -46,8 +46,14 @@ if (isset($_REQUEST["oai"])) {
             $rows = $data->children('http://purl.org/dc/elements/1.1/');
 
             $array = get_object_vars($rows);
+
+            $json = json_encode($array);
+            $json = iconv('UTF-8', 'ISO-8859-1//TRANSLIT//IGNORE', $json);
+            $array = json_decode($json, true);
+
+
             $body["doc"]["old_id"] = (string)$rec->header->identifier;
-            $body["doc"]["type"] = "Record OAI";
+            $body["doc"]["type"] = "Record OAI";      
             $body["doc"]["complete"] = $array;
             $body["doc_as_upsert"] = true;
             $id = uuid();
