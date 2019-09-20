@@ -36,7 +36,6 @@
                     <label for="metadataFormat">Formato de metadados</label>
                     <select class="form-control" id="metadataFormat" name="metadataFormat">
                     <option value="oai_dc" selected>oai_dc</option>
-                    <option>2</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Enviar</button>
