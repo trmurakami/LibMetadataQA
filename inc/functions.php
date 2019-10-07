@@ -376,6 +376,9 @@ Class Facets
         </div>
         <div class="card-body">';
 
+        echo '<div class="d-flex bd-highlight">
+                <div class="p-2 flex-grow-1 bd-highlight">';
+
         echo '<ul class="list-group list-group-flush">';  
         foreach ($response["aggregations"]["counts"]["buckets"] as $facetResponse) {
             echo '<li class="list-group-item d-flex justify-content-between align-items-center">';
@@ -389,13 +392,15 @@ Class Facets
             $alertClass = "alert-success"; 
         } else {
             $alertClass = "alert-warning"; 
-        }        
+        }
+        echo '</div>';
+        echo '<div class="p-2 bd-highlight">';        
         echo '<div class="alert '.$alertClass.'" role="alert"><a href="listrecords.php?&search=-_exists_:complete.'.$field_name.'.keyword">Registros com o campo '.$field_name.' não preenchido: '.$numberMissing.'</a></div>';
         $numberAgg = Tests::countAgg($field_name);
         echo '<p>Número de valores únicos no campo: '.$numberAgg.'</p>';
+        echo '<a href="tools/export.php?field='.$field_name.'">Exportar valores do campo '.$field_name.'</a>';
         echo '</div>';
-        echo '<div class="card-footer text-muted"><a href="tools/export.php?field='.$field_name.'">Exportar valores do campo '.$field_name.'</a></div>';
-        echo '</div><br/><br/>';              
+        echo '</div></div></div>';         
     }
 }
 
