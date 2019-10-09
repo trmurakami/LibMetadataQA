@@ -88,10 +88,11 @@ $cursor = $client->search($params);
                         $keyArray[] = '<th scope="col">_id</th>';
                         $valueArray[]='<tr>';
                         $valueArray[]='<td>'.$r["_source"]["old_id"].'</td>';
-                        if (is_array($r["_source"]["complete"])){
+                        if (is_array($r["_source"]["complete"])) {
                             foreach ($r["_source"]["complete"] as $key => $value) {
-                                $keyArray[] = '<th scope="col">'.$key.'</th>';                            
-                                if (is_array($value)){
+                                $keyArray[] = '<th scope="col">'.$key.'</th>';
+                                if (is_array($value)) {
+                                    print_r($value);
                                     $valueArray[]='<td>'.implode('|', $value).'</td>';
                                 } else {
                                     $valueArray[]='<td>'.$value.'</td>';
