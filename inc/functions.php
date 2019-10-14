@@ -263,6 +263,24 @@ class Elasticsearch
                                         'ignore_above' => 256
                                     ]
                                 ]                                
+                            ],
+                            '100' => [
+                                'properties' => [
+                                    'subfields' => [
+                                        'properties' => [
+                                            'a' => [
+                                                'type' => 'text',
+                                                'analyzer' => 'portuguese',
+                                                'fields' => [
+                                                    'keyword' => [
+                                                        'type' => 'keyword',
+                                                        'ignore_above' => 256
+                                                    ]
+                                                ] 
+                                            ]
+                                        ]
+                                    ]
+                                ]
                             ]
                         ]
                     ]                                         

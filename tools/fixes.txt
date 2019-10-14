@@ -1,0 +1,4 @@
+marc_remove(1000)
+marc_remove(6000)
+marc_remove(6100)
+marc_remove(7000)
