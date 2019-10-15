@@ -74,49 +74,37 @@ $cursor = $client->search($params);
         <main role="main">
             <div class="container">
 
-            <div class="row">
-                <div class="col-12">                
-                <table class="table">
+            <ul class="list-group">
+                
+                
 
+                <!-- RECORDS -->
+                <?php
 
-                    <!-- RECORDS -->
-                    <?php
+                function implode_r($g, $p) {
+                    return is_array($p) ?
+                        implode($g, array_map(__FUNCTION__, array_fill(0, count($p), $g), $p)) : 
+                        $p;
+                }                
 
-                    foreach ($cursor["hits"]["hits"] as $r) {
-                        
-                        $keyArray = [];
-                        $keyArray[] = '<th scope="col">_id</th>';
-                        $valueArray[]='<tr>';
-                        $valueArray[]='<td>'.$r["_source"]["old_id"].'</td>';
-                        if (is_array($r["_source"]["complete"])) {
-                            foreach ($r["_source"]["complete"] as $key => $value) {
-                                $keyArray[] = '<th scope="col">'.$key.'</th>';
-                                if (is_array($value)) {
-                                    print_r($value);
-                                    $valueArray[]='<td>'.implode('|', $value).'</td>';
-                                } else {
-                                    $valueArray[]='<td>'.$value.'</td>';
-                                }                    
-                                
-                            }
-                        }
-                        $valueArray[]='</tr>';                     
-                    }
+                foreach ($cursor["hits"]["hits"] as $r) {
+
+                    echo '<li class="list-group-item"><ul style="list-style-type:none">';
                     
-                    ?>  
-                    <!-- /RECORDS -->
-
-                    <thead>
-    <tr>
-      <?php print_r(implode('', $keyArray)); ?>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-        <?php print_r(implode('', $valueArray)); ?>
-    </tr>
-  </tbody>
-</table>                    
+                    echo '<li><b>_id:</b> '.(isset($r["_source"]["old_id"]) ? print_r($r["_source"]["old_id"]) : "").'</li>';
+                    if (is_array($r["_source"]["complete"])) {
+                        foreach ($r["_source"]["complete"] as $key => $value) {
+                            echo '<li><b>'.$key.': </b>'.implode_r(',', $value).'</li>';
+                        }
+                    }
+                    echo '</ul></li>';             
+                }
+                
+                ?>  
+                <!-- /RECORDS -->
+                
+                </li>
+            </ul>                 
                                 
                 
                 </div>
