@@ -416,7 +416,8 @@ Class Facets
         echo '<div class="alert '.$alertClass.'" role="alert"><a href="listrecords.php?&search=-_exists_:complete.'.$field_name.'.keyword">Registros com o campo '.$field_name.' não preenchido: '.$numberMissing.'</a></div>';
         $numberAgg = Tests::countAgg($field_name);
         echo '<p>Número de valores únicos no campo: '.$numberAgg.'</p>';
-        echo '<a href="tools/export.php?field='.$field_name.'">Exportar valores do campo '.$field_name.'</a>';
+        echo '<p><a href="tools/export.php?field='.$field_name.'">Exportar valores do campo '.$field_name.'</a></p>';
+        echo '<p><a href="tools/tematres_report.php?field='.$field_name.'">Gerar relatório de correspondência no Tematres para o campo '.$field_name.'</a></p>';
         echo '</div>';
         echo '</div></div></div>';         
     }
@@ -440,6 +441,66 @@ Class Tests
         $query["aggs"]["type_count"]["cardinality"]["field"] = "complete.$field.keyword";
         $responseAgg = Elasticsearch::search(null, 0, $query);
         return $responseAgg["aggregations"]["type_count"]["value"];
+    }
+    
+    public static function tematresQuery($term, $tematresWebServicesUrl)
+    {
+        // Clean term
+        $term = preg_replace("/\s+/", " ", $term);
+        $clean_term = str_replace(array("\r\n", "\n", "\r"), "", $term);
+        $clean_term = preg_replace('/^\s+|\s+$/', '', $clean_term);
+        $clean_term = str_replace("\t\n\r\0\x0B\xc2\xa0", " ", $clean_term);
+        $clean_term = trim($clean_term, " \t\n\r\0\x0B\xc2\xa0");
+        $clean_term = rawurlencode($clean_term);
+        $clean_term_p = $term;
+        $clean_term = str_replace("%C2%A0", "%20", $clean_term);
+        $clean_term = str_replace("&", "e", $clean_term);
+        // Query tematres
+        $ch = curl_init();
+        $method = "GET";
+        $url = ''.$tematresWebServicesUrl.'?task=fetch&arg='.$clean_term.'&output=json';
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+        $result_get_id_tematres = curl_exec($ch);
+        $resultado_get_id_tematres = json_decode($result_get_id_tematres, true);
+        curl_close($ch);
+        // Get correct term
+        if ($resultado_get_id_tematres["resume"]["cant_result"] != 0) {
+            foreach ($resultado_get_id_tematres["result"] as $key => $val) {
+                $term_key = $key;
+            }
+            $ch = curl_init();
+            $method = "GET";
+            $url = ''.$tematresWebServicesUrl.'?task=fetchTerm&arg='.$term_key.'&output=json';
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+            $result_term = curl_exec($ch);
+            $resultado_term = json_decode($result_term, true);
+            $found_term = $resultado_term["result"]["term"]["string"];
+            $term_not_found = "";
+            curl_close($ch);
+            $ch_country = curl_init();
+            $method = "GET";
+            $url_country = ''.$tematresWebServicesUrl.'?task=fetchUp&arg='.$term_key.'&output=json';
+            curl_setopt($ch_country, CURLOPT_URL, $url_country);
+            curl_setopt($ch_country, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch_country, CURLOPT_CUSTOMREQUEST, strtoupper($method));
+            $result_country = curl_exec($ch_country);
+            $resultado_country = json_decode($result_country, true);
+            foreach ($resultado_country["result"] as $country_list) {
+                if ($country_list["order"] == 1) {
+                    $country = $country_list["string"];
+                }
+            }
+            curl_close($ch_country);
+        } else {
+            $term_not_found = $clean_term_p;
+            $found_term = "";
+            $country = "ND";
+        }
+        return compact('foundTerm', 'termNotFound', 'topTerm');
     }    
 }
 
