@@ -31,7 +31,10 @@ if (!empty($_REQUEST["field"])) {
 
         foreach ($cursor["hits"]["hits"] as $r) {
 
-            print_r($r["_source"]["complete"]);
+            foreach ($r["_source"]["complete"] as $term) {
+                print_r($term[$_REQUEST['field']]["subfields"][0][$_REQUEST['subfield']]);
+                echo "<br/><br/>";
+            }
             echo "<br/><br/>";
 
             //unset($fields);
