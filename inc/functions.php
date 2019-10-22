@@ -350,14 +350,14 @@ class Report
             foreach ($response[$index]["mappings"]["properties"]["complete"]["properties"] as $k => $v) {
                 if (isset($v["properties"])) {
                     if (isset($v["properties"]["ind1"])) {
-                        $facets->facet($k.".ind1", 5, $k." (Indicador 1)", null, "_term");
+                        $facets->facet($k.".ind1", 5, $k." (Indicador 1)", null, "_term", null);
                     }
                     if (isset($v["properties"]["ind2"])) {
-                        $facets->facet($k.".ind2", 5, $k." (Indicador 2)", null, "_term");
+                        $facets->facet($k.".ind2", 5, $k." (Indicador 2)", null, "_term", null);
                     }
                     if (isset($v["properties"]["subfields"])) {
                         foreach ($v["properties"]["subfields"]["properties"] as $k_prop => $v_prop) {
-                            $facets->facet($k.".subfields.".$k_prop, 5, $k." Subcampo ".$k_prop, null, "_term");
+                            $facets->facet($k.".subfields.".$k_prop, 5, $k." Subcampo ".$k_prop, null, "_term", $k, $k_prop);
                         }
                         
                     }                                         
@@ -376,7 +376,7 @@ class Report
 
 Class Facets 
 {
-    public function facet($field, $size, $field_name, $sort, $sort_type)
+    public function facet($field, $size, $field_name, $sort, $sort_type, $fieldNumber = null, $subfieldNumber = null)
     {
         $query["query"]["bool"]["must"]["query_string"]["query"] = "*";
         $query["aggs"]["counts"]["terms"]["field"] = "complete.$field.keyword";
@@ -417,7 +417,9 @@ Class Facets
         $numberAgg = Tests::countAgg($field_name);
         echo '<p>Número de valores únicos no campo: '.$numberAgg.'</p>';
         echo '<p><a href="tools/export.php?field='.$field_name.'">Exportar valores do campo '.$field_name.'</a></p>';
-        echo '<p><a href="tools/tematres_report.php?field='.$field_name.'">Gerar relatório de correspondência no Tematres para o campo '.$field_name.'</a></p>';
+        if (!is_null($fieldNumber)) {
+            echo '<p><a href="tools/tematres_report.php?field='.$fieldNumber.'&subfield='.$subfieldNumber.'">Gerar relatório de correspondência no Tematres para o campo '.$field_name.'</a></p>';
+        }        
         echo '</div>';
         echo '</div></div></div>';         
     }

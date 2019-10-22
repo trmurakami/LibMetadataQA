@@ -7,12 +7,13 @@ require '../inc/functions.php';
 //header("Content-Disposition: attachment; filename=$file");
 
 if (!empty($_REQUEST["field"])) {
-    $query["query"]["query_string"]["query"] = '_exists_:'.$_REQUEST['field'].'';
+    $completeField = 'complete.'.$_REQUEST['field'].'.subfields.'.$_REQUEST['subfield'].'';
+    $query["query"]["query_string"]["query"] = '_exists_:'.$completeField.'';
     $params = [];
     $params["index"] = $index;
     $params["size"] = 2;
     $params["scroll"] = "30s";
-    $params["_source"] = ["_id", $_REQUEST["field"]];
+    $params["_source"] = ["_id", $completeField];
     $params["body"] = $query;
 
     $cursor = $client->search($params);
@@ -30,7 +31,8 @@ if (!empty($_REQUEST["field"])) {
 
         foreach ($cursor["hits"]["hits"] as $r) {
 
-            print_r($r);
+            print_r($r["_source"]["complete"]);
+            echo "<br/><br/>";
 
             //unset($fields);
 
