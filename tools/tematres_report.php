@@ -20,14 +20,14 @@ if (!empty($_REQUEST["field"])) {
 
     $content[] = "ID\tTermo atual\tTermo encontrado\tTermo Top";
 
-    // while (isset($cursor['hits']['hits']) && count($cursor['hits']['hits']) > 0) {
-    //     $scroll_id = $cursor['_scroll_id'];
-    //     $cursor = $client->scroll(
-    //         [
-    //         "scroll_id" => $scroll_id,
-    //         "scroll" => "30s"
-    //         ]
-    //     );
+    while (isset($cursor['hits']['hits']) && count($cursor['hits']['hits']) > 0) {
+        $scroll_id = $cursor['_scroll_id'];
+        $cursor = $client->scroll(
+            [
+            "scroll_id" => $scroll_id,
+            "scroll" => "30s"
+            ]
+        );
 
         foreach ($cursor["hits"]["hits"] as $r) {
 
@@ -60,7 +60,7 @@ if (!empty($_REQUEST["field"])) {
             // unset($fields);
 
 
-        //}
+        }
     }
     echo implode("\n", $content);
 
