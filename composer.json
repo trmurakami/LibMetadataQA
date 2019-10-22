@@ -1,6 +1,6 @@
 {
     "require": {
-        "elasticsearch/elasticsearch": "^7.2",
+        "elasticsearch/elasticsearch": "^7.3",
         "caseyamcl/phpoaipmh": "^3.0",
         "ramsey/uuid": "^3.8"
     }

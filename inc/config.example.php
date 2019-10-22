@@ -1,6 +1,8 @@
 <?php 
 
 $hosts=['localhost'];
-$index = 'limetadataqa';
+$index = 'libmetadataqa';
+
+$tematresWebServicesUrl = '';
 
 ?>
