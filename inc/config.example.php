@@ -3,6 +3,6 @@
 $hosts=['localhost'];
 $index = 'libmetadataqa';
 
-$tematresWebServicesUrl = '';
+$tematresWebServicesUrl = 'http://localhost/tematres/vocab/services.php';
 
 ?>
