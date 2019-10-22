@@ -466,7 +466,6 @@ Class Tests
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
         $result_get_id_tematres = curl_exec($ch);
         $resultado_get_id_tematres = json_decode($result_get_id_tematres, true);
-        print_r($resultado_get_id_tematres["resume"]["cant_result"]);
         curl_close($ch);
         // Get correct term
         if ($resultado_get_id_tematres["resume"]["cant_result"] != 0) {

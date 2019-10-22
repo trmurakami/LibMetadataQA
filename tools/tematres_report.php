@@ -2,9 +2,9 @@
 
 require '../inc/functions.php';
 
-//$file = "tematresReport.tsv";
-//header('Content-type: text/tab-separated-values; charset=utf-8');
-//header("Content-Disposition: attachment; filename=$file");
+$file = "tematresReport.tsv";
+header('Content-type: text/tab-separated-values; charset=utf-8');
+header("Content-Disposition: attachment; filename=$file");
 
 if (!empty($_REQUEST["field"])) {
     $completeField = 'complete.'.$_REQUEST['field'].'.subfields.'.$_REQUEST['subfield'].'';
@@ -32,13 +32,13 @@ if (!empty($_REQUEST["field"])) {
         foreach ($cursor["hits"]["hits"] as $r) {
 
             foreach ($r["_source"]["complete"] as $term) {
-                print_r($term[$_REQUEST['field']]["subfields"][0][$_REQUEST['subfield']]);
-                echo "<br/><br/>";
+                //print_r($term[$_REQUEST['field']]["subfields"][0][$_REQUEST['subfield']]);
+                $originalTerm = $term[$_REQUEST['field']]["subfields"][0][$_REQUEST['subfield']];
                 $tematresQueryResult = Tests::tematresQuery($term[$_REQUEST['field']]["subfields"][0][$_REQUEST['subfield']], $tematresWebServicesUrl);
-                print_r($tematresQueryResult);
-                echo "<br/><br/>";
+                $foundTerm = $tematresQueryResult["foundTerm"];
+                $topTerm = $tematresQueryResult["topTerm"];
+                $content[] = "\t$originalTerm\t$foundTerm\t$topTerm";
             }
-            echo "<br/><br/>";
 
             //unset($fields);
 
