@@ -76,7 +76,9 @@ $cursor = $client->search($params);
 
             <ul class="list-group">
                 
-                
+                <!-- PAGINATION -->
+                <?php UI::pagination($page, $total, $limit); ?>
+                <!-- /PAGINATION --> 
 
                 <!-- RECORDS -->
                 <?php
