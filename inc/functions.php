@@ -466,6 +466,7 @@ Class Tests
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
         $result_get_id_tematres = curl_exec($ch);
         $resultado_get_id_tematres = json_decode($result_get_id_tematres, true);
+        print_r($resultado_get_id_tematres["resume"]["cant_result"]);
         curl_close($ch);
         // Get correct term
         if ($resultado_get_id_tematres["resume"]["cant_result"] != 0) {
@@ -480,8 +481,8 @@ Class Tests
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method));
             $result_term = curl_exec($ch);
             $resultado_term = json_decode($result_term, true);
-            $found_term = $resultado_term["result"]["term"]["string"];
-            $term_not_found = "";
+            $foundTerm = $resultado_term["result"]["term"]["string"];
+            $termNotFound = "";
             curl_close($ch);
             $ch_country = curl_init();
             $method = "GET";
@@ -493,14 +494,14 @@ Class Tests
             $resultado_country = json_decode($result_country, true);
             foreach ($resultado_country["result"] as $country_list) {
                 if ($country_list["order"] == 1) {
-                    $country = $country_list["string"];
+                    $topTerm = $country_list["string"];
                 }
             }
             curl_close($ch_country);
         } else {
-            $term_not_found = $clean_term_p;
-            $found_term = "";
-            $country = "ND";
+            $termNotFound = $clean_term_p;
+            $foundTerm = "";
+            $topTerm = "ND";
         }
         return compact('foundTerm', 'termNotFound', 'topTerm');
     }    
