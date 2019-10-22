@@ -481,7 +481,7 @@ Class Tests
             $result_term = curl_exec($ch);
             $resultado_term = json_decode($result_term, true);
             $foundTerm = $resultado_term["result"]["term"]["string"];
-            $termNotFound = "";
+            $termNotFound = "ND";
             curl_close($ch);
             $ch_country = curl_init();
             $method = "GET";
@@ -499,7 +499,7 @@ Class Tests
             curl_close($ch_country);
         } else {
             $termNotFound = $clean_term_p;
-            $foundTerm = "";
+            $foundTerm = "ND";
             $topTerm = "ND";
         }
         return compact('foundTerm', 'termNotFound', 'topTerm');

@@ -13,7 +13,7 @@ if (!empty($_REQUEST["field"])) {
     $params["index"] = $index;
     $params["size"] = 2;
     $params["scroll"] = "30s";
-    $params["_source"] = ["_id", $completeField];
+    $params["_source"] = ["_id", "old_id", $completeField];
     $params["body"] = $query;
 
     $cursor = $client->search($params);
@@ -35,9 +35,15 @@ if (!empty($_REQUEST["field"])) {
                 //print_r($term[$_REQUEST['field']]["subfields"][0][$_REQUEST['subfield']]);
                 $originalTerm = $term[$_REQUEST['field']]["subfields"][0][$_REQUEST['subfield']];
                 $tematresQueryResult = Tests::tematresQuery($term[$_REQUEST['field']]["subfields"][0][$_REQUEST['subfield']], $tematresWebServicesUrl);
+                if (!empty($r["_source"]["old_id"])) {
+                    $ID = $r["_source"]["old_id"];
+                } else {
+                    $ID = $r["_id"];
+                }
+                
                 $foundTerm = $tematresQueryResult["foundTerm"];
                 $topTerm = $tematresQueryResult["topTerm"];
-                $content[] = "\t$originalTerm\t$foundTerm\t$topTerm";
+                $content[] = "$ID\t$originalTerm\t$foundTerm\t$topTerm";
             }
 
             //unset($fields);
