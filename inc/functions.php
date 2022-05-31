@@ -390,7 +390,7 @@ Class Facets
         
         echo '<div class="card text-center">
         <div class="card-header bg-info">
-          Campo: '.$field_name.'
+          Field: '.$field_name.'
         </div>
         <div class="card-body">';
 
@@ -413,10 +413,10 @@ Class Facets
         }
         echo '</div>';
         echo '<div class="p-2 bd-highlight">';        
-        echo '<div class="alert '.$alertClass.'" role="alert"><a href="listrecords.php?&search=-_exists_:complete.'.$field_name.'.keyword">Registros com o campo '.$field_name.' não preenchido: '.$numberMissing.'</a></div>';
+        echo '<div class="alert '.$alertClass.'" role="alert"><a href="listrecords.php?&search=-_exists_:complete.'.$field_name.'.keyword">Records with the field '.$field_name.' not filled: '.$numberMissing.'</a></div>';
         $numberAgg = Tests::countAgg($field_name);
-        echo '<p>Número de valores únicos no campo: '.$numberAgg.'</p>';
-        echo '<p><a href="tools/export.php?field='.$field_name.'">Exportar valores do campo '.$field_name.'</a></p>';
+        echo '<p>Number of unique values in the field: '.$numberAgg.'</p>';
+        echo '<p><a href="tools/export.php?field='.$field_name.'">Export field values: '.$field_name.'</a></p>';
         if (!is_null($fieldNumber)) {
             echo '<p><a href="tools/tematres_report.php?field='.$fieldNumber.'&subfield='.$subfieldNumber.'">Gerar relatório de correspondência no Tematres para o campo '.$field_name.'</a></p>';
         }        

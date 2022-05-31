@@ -7,13 +7,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-            <a class="nav-link" href="import.php">Importar metadados</a>
+            <a class="nav-link" href="import.php">Import metadata</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="report.php">Relatório</a>
+            <a class="nav-link" href="report.php">Report</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="about.php">Sobre o LibMetadataQA</a>
+            <a class="nav-link" href="about.php">About</a>
             </li>            
         </ul>
         </div>

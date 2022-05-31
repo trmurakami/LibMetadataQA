@@ -19,12 +19,12 @@
     <div class="container">
         
         <h1>LibMetadataQA</h1>
-        <p>Ferramenta para certificação de qualidade dos metadados em acervos</p>
+        <p>Tool for improve quality of metadata in metadata collections</p>
 
         <?php isset($error_connection_message)? print_r($error_connection_message):"" ?>
 
-        <p>1º Passo: Importar os metadados</p>
-        <p>2º Passo: Analisar o relatório gerado</p>
+        <p>Step 1: Import metadata</p>
+        <p>Step 2: Analyze the generated report</p>
 
         <div class="row">
         <!--
@@ -40,13 +40,13 @@
         </div>
         -->
         <div class="col-md-4">
-            <h2>Registros</h2>
+            <h2>Records</h2>
             <ul class="list-group">
-                <li class="list-group-item"><a class="text-muted" href="search.php">Quantidade de registros: <?php echo Homepage::numberOfRecords(); ?></a></li>
+                <li class="list-group-item"><a class="text-muted" href="search.php">Number of records: <?php echo Homepage::numberOfRecords(); ?></a></li>
             </ul>
         </div>        
         <div class="col-md-4">
-            <h2>Tipos</h2>
+            <h2>Types</h2>
             <ul class="list-group">
                 <?php Homepage::fieldAgg("type");?>
             </ul>
